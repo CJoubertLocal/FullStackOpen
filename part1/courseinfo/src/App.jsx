@@ -10,16 +10,13 @@ const Content = (props) => {
   return (
     <div>
       <Part 
-        partName={props.exercises[0].name} 
-        numExercises={props.exercises[0].numExercises}
+        partInfo={props.exerciseList[0]}
         />
       <Part 
-        partName={props.exercises[1].name} 
-        numExercises={props.exercises[1].numExercises}
+        partInfo={props.exerciseList[1]} 
         />
       <Part 
-        partName={props.exercises[2].name} 
-        numExercises={props.exercises[2].numExercises}
+        partInfo={props.exerciseList[2]} 
         />
       
     </div>
@@ -28,16 +25,14 @@ const Content = (props) => {
 
 const Part = (prop) => {
   return (
-    <p>{prop.partName} {prop.numExercises}</p>
+    <p>{prop.partInfo.name} {prop.partInfo.exercises}</p>
   )
 }
 
+// Alternative to content, which an accept an array of a length other than 3.
 const ContentAlternative = (propList) => {
-  let exerciseData = propList.exercises.map(
-    e =>
-      <p>
-        {e.name} {e.total}
-      </p>
+  let exerciseData = propList.exerciseList.map(
+    e => <Part partName={e.name} numExercises={e.exercises}/>
   );
 
   return (
@@ -48,8 +43,8 @@ const ContentAlternative = (propList) => {
 }
 
 const Total = (prop) => {
-  let sumTotal = prop.exercises.reduce(
-    (acc, cur) => acc + cur.total, 0
+  let sumTotal = prop.exerciseList.reduce(
+    (acc, cur) => acc + cur.exercises, 0
   );
 
   return (
@@ -57,33 +52,28 @@ const Total = (prop) => {
   )
 }
 
-class Exercise {
-  constructor(nameIn, numExercises) {
-    this.name = nameIn
-    this.total = numExercises
-  }
-}
-
 const App = () => {
   const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
-
-  let exerciseList = [
-    new Exercise(part1, exercises1),
-    new Exercise(part2, exercises2),
-    new Exercise(part3, exercises3)
-  ];
+  const parts = [
+    {
+      name: 'Fundamentals of React',
+      exercises: 10
+    },
+    {
+      name: 'Using props to pass data',
+      exercises: 7
+    },
+    {
+      name: 'State of a component',
+      exercises: 14
+    }
+  ]
 
   return (
     <div>
       <Header msg={course}/>
-      <Content exercises={exerciseList}/>
-      <Total exercises={exerciseList}/>
+      <Content exerciseList={parts}/>
+      <Total exerciseList={parts}/>
     </div>
   )
 }

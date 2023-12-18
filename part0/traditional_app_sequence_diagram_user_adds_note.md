@@ -30,13 +30,14 @@
         deactivate server
     
         Note right of browser: The JavaScript function executes a GET request to <br/>'/exampleapp/data.json'.
+    
+        browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+        activate server
+        server->>browser: JSON Payload: [{"content":"","date":"2023-12-17T13:56:38.185Z"}, ...
+        deactivate server
+    
+        Note right of browser: The browser executes a function to render the JSON <br/>as an unordered list.
+    
+        browser->>user: Displays list of content with user input added to the page.
+
 ```
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
-    activate server
-    server->>browser: JSON Payload: [{"content":"","date":"2023-12-17T13:56:38.185Z"}, ...
-    deactivate server
-
-    Note right of browser: The browser executes a function to render the JSON <br/>as an unordered list.
-
-    browser->>user: Displays list of content with user input added to the page.

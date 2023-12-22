@@ -12,11 +12,48 @@ const StatisticsDisplay = (prop) => (
   </>
 )
 
+const Total = (props) => (
+  <>
+    all {props.statlist.reduce((acc, s) => acc + s, 0)}
+  </>
+)
+
+const Average = ({ good, neutral, bad }) => {
+  let average = (good - bad) / (good + neutral + bad)
+
+  if (isNaN(average)) {
+    average = 0
+  }
+
+  return (
+    <>
+      average {average}
+    </>
+  )
+}
+
+const Percentage = ({text, good, neutral, bad}) => {
+  let percentage = good / (good + neutral + bad)
+
+  if (isNaN(percentage)) { 
+    percentage = 0 
+  }
+
+  return (
+    <>
+      {text} {percentage}
+    </>
+  )
+}
+
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+
+  const statlist = [good, neutral, bad]
 
   return (
     <>
@@ -37,6 +74,15 @@ const App = () => {
       </div>
       <div>
         <StatisticsDisplay text='bad' stat={bad} />
+      </div>
+      <div>
+        <Total statlist={statlist} />
+      </div>
+      <div>
+        <Average good={good} neutral={neutral} bad={bad} />
+      </div>
+      <div>
+        <Percentage text='positive' good={good} neutral={neutral} bad={bad} />
       </div>
     </>
   )

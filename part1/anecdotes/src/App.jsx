@@ -6,6 +6,12 @@ const Button = (prop) => (
   </button>
 )
 
+const DisplayVote = (prop) => (
+  <>
+    has {prop.voteCount} votes
+  </>
+)
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -20,8 +26,21 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
 
+  
+  const pointsMap = new Map();
+  for (var i = 0; i < anecdotes.length; i++) {
+    pointsMap.set(i, 0)
+  }
+  const [points, setPoints] = useState({pointsMap})
+
   const getRandomAnecdoteIndex = () => {
     setSelected(Math.floor(Math.random() * anecdotes.length))
+  }
+
+  const handleVote = () => {
+    const copy = {...points}
+    copy.pointsMap.set(selected, copy.pointsMap.get(selected) + 1)
+    setPoints(copy)
   }
 
   return (
@@ -30,6 +49,10 @@ const App = () => {
         {anecdotes[selected]}
       </div>
       <div>
+        <DisplayVote voteCount={points.pointsMap.get(selected)} />
+      </div>
+      <div>
+        <Button text='vote' handleClick={handleVote} />
         <Button text='next anecdote' handleClick={getRandomAnecdoteIndex} />
       </div>
     </>

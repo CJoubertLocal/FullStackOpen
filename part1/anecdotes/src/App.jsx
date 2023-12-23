@@ -25,7 +25,7 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
-
+  const [indexWithMostVotes, setIndexWithMostVotes] = useState(0)
   
   const pointsMap = new Map();
   for (var i = 0; i < anecdotes.length; i++) {
@@ -41,10 +41,17 @@ const App = () => {
     const copy = {...points}
     copy.pointsMap.set(selected, copy.pointsMap.get(selected) + 1)
     setPoints(copy)
+
+    if (points.pointsMap.get(selected) > points.pointsMap.get(indexWithMostVotes)) {
+      setIndexWithMostVotes(selected)
+    }
   }
 
   return (
     <>
+      <h1>
+        Anecdote of the day
+      </h1>
       <div>
         {anecdotes[selected]}
       </div>
@@ -54,6 +61,15 @@ const App = () => {
       <div>
         <Button text='vote' handleClick={handleVote} />
         <Button text='next anecdote' handleClick={getRandomAnecdoteIndex} />
+      </div>
+      <h1>
+        Anecdote with most votes
+      </h1>
+      <div>
+        {anecdotes[indexWithMostVotes]}
+      </div>
+      <div>
+        <DisplayVote voteCount={points.pointsMap.get(indexWithMostVotes)} />
       </div>
     </>
   )

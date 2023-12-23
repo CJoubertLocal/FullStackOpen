@@ -13,10 +13,11 @@ const StatisticsDisplay = (prop) => (
 )
 
 const Total = (props) => (
-  <>
-    all {props.statlist.reduce((acc, s) => acc + s, 0)}
-  </>
-)
+    <>
+      all {props.stats.reduce((acc, s) => acc + s, 0)}
+    </>
+  )
+
 
 const Average = ({ good, neutral, bad }) => {
   let average = (good - bad) / (good + neutral + bad)
@@ -32,8 +33,9 @@ const Average = ({ good, neutral, bad }) => {
   )
 }
 
-const Percentage = ({text, good, neutral, bad}) => {
-  let percentage = good / (good + neutral + bad)
+const Percentage = (props) => {
+  let percentage = props.stats.filter(s => s.name === 'good')[0].value / 
+                    props.stats.reduce((acc, s) => acc + s.value, 0)
 
   if (isNaN(percentage)) { 
     percentage = 0 
@@ -41,7 +43,53 @@ const Percentage = ({text, good, neutral, bad}) => {
 
   return (
     <>
-      {text} {percentage}
+      {props.text} {percentage}
+    </>
+  )
+}
+
+const StatisticsBlock = (props) => {
+
+  if (props.stats.reduce((acc, s) => acc + s.value, 0) == 0) {
+    return (
+      <>
+        <h1>
+          statistics
+        </h1>
+        No feedback yet
+      </>
+    )
+  }
+
+  return (
+    <>
+      <h1>
+        statistics
+      </h1>
+      <div>
+        {props.stats.map(s => 
+          <div>
+            <StatisticsDisplay
+              text={s.name}
+              stat={s.value} />
+          </div>
+        )}
+      </div>
+      <div>
+        <Total 
+          stats={props.stats.map(s => s.value)} />
+      </div>
+      <div>
+        <Average 
+          good={props.stats[0].value} 
+          neutral={props.stats[1].value} 
+          bad={props.stats[2].value} />
+      </div>
+      <div>
+        <Percentage 
+          text='positive' 
+          stats={props.stats} />
+      </div>
     </>
   )
 }
@@ -53,7 +101,23 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const statlist = [good, neutral, bad]
+  const statlist = [
+      {
+        name: 'good',
+        value: good,
+        setFunc: setGood
+      },
+      {
+        name: 'neutral',
+        value: neutral,
+        setFunc: setNeutral
+      },
+      {
+        name: 'bad',
+        value: bad,
+        setFunc: setBad
+      }
+    ]
 
   return (
     <>
@@ -63,27 +127,7 @@ const App = () => {
       <Button text='good' handleClick={() => setGood(good + 1)} />
       <Button text='neutral' handleClick={() => setNeutral(neutral + 1)} />
       <Button text='bad' handleClick={() => setBad(bad + 1)} />
-      <h1>
-        statistics
-      </h1>
-      <div>
-        <StatisticsDisplay text='good' stat={good} />
-      </div>
-      <div>
-        <StatisticsDisplay text='neutral' stat={neutral} />
-      </div>
-      <div>
-        <StatisticsDisplay text='bad' stat={bad} />
-      </div>
-      <div>
-        <Total statlist={statlist} />
-      </div>
-      <div>
-        <Average good={good} neutral={neutral} bad={bad} />
-      </div>
-      <div>
-        <Percentage text='positive' good={good} neutral={neutral} bad={bad} />
-      </div>
+      <StatisticsBlock stats={statlist}></StatisticsBlock>
     </>
   )
 }

@@ -6,51 +6,17 @@ const Button = (prop) => (
   </button>
 )
 
-const StatisticsDisplay = (prop) => (
-  <>
-    {prop.text} {prop.stat}
-  </>
+const StatisticLine = ({ text, value }) => (
+  <div>
+    {text} {value}
+  </div>
 )
-
-const Total = (props) => (
-    <>
-      all {props.stats.reduce((acc, s) => acc + s, 0)}
-    </>
-  )
-
-
-const Average = ({ good, neutral, bad }) => {
-  let average = (good - bad) / (good + neutral + bad)
-
-  if (isNaN(average)) {
-    average = 0
-  }
-
-  return (
-    <>
-      average {average}
-    </>
-  )
-}
-
-const Percentage = (props) => {
-  let percentage = props.stats.filter(s => s.name === 'good')[0].value / 
-                    props.stats.reduce((acc, s) => acc + s.value, 0)
-
-  if (isNaN(percentage)) { 
-    percentage = 0 
-  }
-
-  return (
-    <>
-      {props.text} {percentage}
-    </>
-  )
-}
 
 const StatisticsBlock = (props) => {
 
-  if (props.stats.reduce((acc, s) => acc + s.value, 0) == 0) {
+  const total = props.stats.reduce((acc, s) => acc + s.value, 0)
+
+  if (total == 0) {
     return (
       <>
         <h1>
@@ -61,34 +27,22 @@ const StatisticsBlock = (props) => {
     )
   }
 
+  const average = (props.stats[0].value - props.stats[2].value) / total
+  const positivePercentage = (props.stats[0].value) / total
+
   return (
     <>
       <h1>
         statistics
       </h1>
       <div>
-        {props.stats.map(s => 
-          <div>
-            <StatisticsDisplay
-              text={s.name}
-              stat={s.value} />
-          </div>
-        )}
-      </div>
-      <div>
-        <Total 
-          stats={props.stats.map(s => s.value)} />
-      </div>
-      <div>
-        <Average 
-          good={props.stats[0].value} 
-          neutral={props.stats[1].value} 
-          bad={props.stats[2].value} />
-      </div>
-      <div>
-        <Percentage 
-          text='positive' 
-          stats={props.stats} />
+        {/* Could map over props list */}
+        <StatisticLine text="good" value={props.stats[0].value} />
+        <StatisticLine text="neutral" value={props.stats[1].value} />
+        <StatisticLine text="bad" value={props.stats[2].value} />
+        <StatisticLine text="all" value={total} />
+        <StatisticLine text="average" value={average} />
+        <StatisticLine text="positive" value={positivePercentage} />
       </div>
     </>
   )
@@ -103,17 +57,14 @@ const App = () => {
 
   const statlist = [
       {
-        name: 'good',
         value: good,
         setFunc: setGood
       },
       {
-        name: 'neutral',
         value: neutral,
         setFunc: setNeutral
       },
       {
-        name: 'bad',
         value: bad,
         setFunc: setBad
       }

@@ -7,9 +7,16 @@ const Button = (prop) => (
 )
 
 const StatisticLine = ({ text, value }) => (
-  <div>
-    {text} {value}
-  </div>
+  <>
+    <tr>
+      <td>
+        {text}
+      </td>
+      <td>
+        {value}
+      </td>
+    </tr>
+  </>
 )
 
 const StatisticsBlock = (props) => {
@@ -36,13 +43,16 @@ const StatisticsBlock = (props) => {
         statistics
       </h1>
       <div>
-        {/* Could map over props list */}
-        <StatisticLine text="good" value={props.stats[0].value} />
-        <StatisticLine text="neutral" value={props.stats[1].value} />
-        <StatisticLine text="bad" value={props.stats[2].value} />
-        <StatisticLine text="all" value={total} />
-        <StatisticLine text="average" value={average} />
-        <StatisticLine text="positive" value={positivePercentage} />
+        <table>
+          <tbody>
+            <StatisticLine text="good" value={props.stats[0].value} />
+            <StatisticLine text="neutral" value={props.stats[1].value} />
+            <StatisticLine text="bad" value={props.stats[2].value} />
+            <StatisticLine text="all" value={total} />
+            <StatisticLine text="average" value={average} />
+            <StatisticLine text="positive" value={positivePercentage} />
+          </tbody>
+        </table>
       </div>
     </>
   )

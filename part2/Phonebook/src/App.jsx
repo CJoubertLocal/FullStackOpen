@@ -2,16 +2,14 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { 
-      name: 'Arto Hellas',
-      number: '040-1234567',
-      id: 1
-    }
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
-  const [showAllPersons, setShowAllPersons] = useState(true)
 
   const addDetails = (event) => {
     event.preventDefault()
@@ -41,14 +39,9 @@ const App = () => {
   
   const handleFilterNameChange = (event) => {
     setFilterName(event.target.value)
-    if (filterName === '') {
-      setShowAllPersons(true)
-    } else {
-      setShowAllPersons(false)
-    }
-  } // TODO: async to forced sync
+  }
 
-  const displayPersonList = showAllPersons
+  const displayPersonList = (filterName === '')
     ? persons.
       map(p => <p key={p.id}>{p.name} {p.number}</p>)
     : persons.

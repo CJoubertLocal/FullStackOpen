@@ -2,34 +2,70 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { 
+      name: 'Arto Hellas',
+      number: '040-1234567',
+      id: 1
+    }
   ]) 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [filterName, setFilterName] = useState('')
+  const [showAllPersons, setShowAllPersons] = useState(true)
 
-  const addName = (event) => {
+  const addDetails = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
+      number: newNumber,
+      id: persons.length + 1
     }
 
     if (persons.filter(p => p.name === newName).length > 0) {
       alert(`${newName} is already added to phonebook`)
+
     } else {
-    
       setPersons(persons.concat(personObject))
       setNewName('')
+      setNewNumber('')
     }
   }
 
   const handleNewNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
+
+  const handleNewNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
+  
+  const handleFilterNameChange = (event) => {
+    setFilterName(event.target.value)
+    if (filterName === '') {
+      setShowAllPersons(true)
+    } else {
+      setShowAllPersons(false)
+    }
+  } // TODO: async to forced sync
+
+  const displayPersonList = showAllPersons
+    ? persons.
+      map(p => <p key={p.id}>{p.name} {p.number}</p>)
+    : persons.
+      filter(p => p.name.toLowerCase().includes(filterName.toLowerCase())).
+      map(p => <p key={p.id}>{p.name} {p.number}</p>)
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
+      <div>
+        filter shown with <input 
+          value={filterName} 
+          onChange={handleFilterNameChange} 
+        />
+      </div>
+      <h2>Add a new contact</h2>
+      <form onSubmit={addDetails}>
         <div>
           name: <input
             value={newName}
@@ -37,11 +73,17 @@ const App = () => {
            />
         </div>
         <div>
+           number: <input
+             value={newNumber}
+             onChange={handleNewNumberChange}
+            />
+        </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
-        {persons.map(p => <p key={p.name}>{p.name}</p>)}
+        {displayPersonList}
     </div>
   )
 }

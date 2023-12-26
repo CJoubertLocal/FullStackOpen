@@ -13,15 +13,37 @@ const PersonForm = ({persons, setPersons}) => {
         id: persons.length + 1
       }
   
-      if (persons.filter(p => p.name === newName).length > 0) {
-        alert(`${newName} is already added to phonebook`)
+      const filteredPersons = persons.filter(p => p.name === newName)
+      if (filteredPersons.length > 0) {
+        if (filteredPersons.filter(p => p.number === newNumber).length > 0) {
+          alert(`${newName} is already added to phonebook`)
+        
+        } else {
+          const res = PersonService.
+            update(filteredPersons[0].id, personObject)
+          
+          if (typeof res !== 'undefined') {
+            res.
+              then(r => {
+                setPersons(
+                  persons.
+                    filter(p => p.id !== filteredPersons[0].id).
+                    concat(r)
+                )
+                setNewName('')
+                setNewNumber('')
+              })
+          }
+        }
   
       } else {
-        PersonService.create(personObject).then(r => {
-          setPersons(persons.concat(r))
-          setNewName('')
-          setNewNumber('')
-        })
+        PersonService.
+          create(personObject).
+          then(r => {
+            setPersons(persons.concat(r))
+            setNewName('')
+            setNewNumber('')
+          })
       }
     }
   

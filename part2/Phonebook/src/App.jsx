@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
 import PersonService from './services/persons'
 
 const App = () => {
@@ -34,10 +33,12 @@ const App = () => {
       <h2>Numbers</h2>
       <Persons 
         persons={persons} 
+        personSetter={setPersons}
         filterName={filterName}
         />
     </div>
   )
 }
+
 
 export default App

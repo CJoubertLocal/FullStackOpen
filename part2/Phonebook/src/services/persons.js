@@ -16,8 +16,33 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
+const deletePerson = (id, arrayToUpdate, setterFunc) => {
+    const request = axios.delete(`${baseUrl}/${id}`)
+
+    const filterAndUpdate = () => {
+        setterFunc(
+            arrayToUpdate.filter(
+                a => a.id !== id
+            )
+        )
+    }
+
+    return request
+        .then(response => {
+            console.log(response)
+            filterAndUpdate()
+        })
+        .catch(error => {
+            alert(
+                `error: person ${id} was not in the server: ${error}`
+            )
+            filterAndUpdate()
+        })
+}
+
 export default { 
   getAll: getAll, 
   create: create, 
-  update: update 
+  update: update,
+  deletePerson: deletePerson,
 }

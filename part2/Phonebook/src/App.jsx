@@ -3,22 +3,16 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import axios from 'axios'
+import PersonService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [filterName, setFilterName] = useState('')
 
-  useEffect(() => {
-    const eventHandler = response => {
-      setPersons(response.data)
-    }
-
-    const promise = axios
-      .get("http://localhost:3001/persons")
-    
-    promise.then(eventHandler)
-  }, 
-    []
+  useEffect(
+    () => {
+      PersonService.getAll().then(ps => setPersons(ps))
+    }, []
   )
 
   const handleFilterNameChange = (event) => {

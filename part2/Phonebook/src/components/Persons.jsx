@@ -1,7 +1,6 @@
 import PersonService from '../services/persons'
 
 const Persons = ({persons, personSetter, filterName}) => {
-    console.log(persons)
 
     const displayPersonList = (filterName === '')
         ? persons.

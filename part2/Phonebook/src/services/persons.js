@@ -17,27 +17,34 @@ const update = (id, newObject) => {
 }
 
 const deletePerson = (id, arrayToUpdate, setterFunc) => {
-    const request = axios.delete(`${baseUrl}/${id}`)
+    const confirmDeletion = window.confirm(
+        `Delete ${arrayToUpdate.filter(p => p.id === id)[0].name}?`
+    )
 
-    const filterAndUpdate = () => {
-        setterFunc(
-            arrayToUpdate.filter(
-                a => a.id !== id
+    if (confirmDeletion) {
+        const request = axios.delete(`${baseUrl}/${id}`)
+
+        const filterAndUpdate = () => {
+            setterFunc(
+                arrayToUpdate.filter(
+                    a => a.id !== id
+                )
             )
-        )
+        }
+
+        return request
+            .then(response => {
+                filterAndUpdate()
+            })
+            .catch(error => {
+                alert(
+                    `error: person ${id} was not in the server: ${error}`
+                )
+                filterAndUpdate()
+            })
     }
 
-    return request
-        .then(response => {
-            console.log(response)
-            filterAndUpdate()
-        })
-        .catch(error => {
-            alert(
-                `error: person ${id} was not in the server: ${error}`
-            )
-            filterAndUpdate()
-        })
+    return
 }
 
 export default { 

@@ -1,15 +1,15 @@
 import PersonService from '../services/persons'
 
-const Persons = ({persons, personSetter, filterName}) => {
+const Persons = ({persons, personSetter, filterName, notificationSetter}) => {
 
     const displayPersonList = (filterName === '')
         ? persons.
-            map(p => PersonRow(p, persons, personSetter))
+            map(p => PersonRow(p, persons, personSetter, notificationSetter))
         : persons.
             filter(p =>
                 p.name.toLowerCase().includes(filterName.toLowerCase())
             ).
-            map(p => PersonRow(p))
+            map(p => PersonRow(p, persons, personSetter, notificationSetter))
         
     return (
         <>
@@ -18,21 +18,20 @@ const Persons = ({persons, personSetter, filterName}) => {
     )
 }
 
-const PersonRow = (p, persons, personSetter) => (
+const PersonRow = (p, persons, personSetter, notificationSetter) => (
     <p key={p.id}>
-        {p.name} 
-        {p.number} 
-        {DeleteButton(
-            p.id, 
-            persons, 
-            personSetter)}
+        {p.name} {p.number} {DeleteButton(
+                                p.id, 
+                                persons, 
+                                personSetter,
+                                notificationSetter)}
     </p>
 )
 
-const DeleteButton = (id, persons, personSetter) => (
+const DeleteButton = (id, persons, personSetter, notificationSetter) => (
     <button 
         onClick={() => {
-            PersonService.deletePerson(id, persons, personSetter)
+            PersonService.deletePerson(id, persons, personSetter, notificationSetter)
         }}>
         delete
     </button>

@@ -20,9 +20,20 @@ const create = (newObject, notificationSetter, notificationStyleSetter) => {
 }
 
 const update = (id, newObject, notificationSetter, notificationStyleSetter) => {
-  const confirmedUpdate = window.confirm(
-    `${newObject.name} is already in the phonebook. Do you want to replace the old number with the new one?`
-  )
+  const confirmedUpdate = false
+
+  try {
+    confirmedUpdate = window.confirm(
+      `${newObject.name} is already in the phonebook. Do you want to replace the old number with the new one?`
+    )
+  } catch(e) {
+    notificationSetter(`${newObject.name} had been removed from the server before I could make this change`)
+    notificationStyleSetter(false)
+    setTimeout(() => {
+      notificationSetter(null)
+    }, 5000)
+    return
+  }
 
   if (!confirmedUpdate) { return }
 
@@ -77,7 +88,7 @@ const deletePerson = (id, arrayToUpdate, setterFunc, notificationSetter, notific
         })
         .catch(error => {
             notificationSetter(
-                `Error: ${personToDelete} had already been deleted from database.`
+                `Information for ${personToDelete} has already been removed from the database.`
             )
             notificationStyleSetter(false)
             setTimeout(() => {

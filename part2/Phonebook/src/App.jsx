@@ -52,12 +52,22 @@ const App = () => {
 const Notification = ({message, useSuccessStyle}) => {
   const sucessStyle = {
     color: 'green',
-    fontSize: 16
+    background: 'lightgreen',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
   }
 
   const errorStyle = {
-    color: 'green',
-    fontSize: 16
+    color: 'red',
+    background: 'lightred',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
   }
 
   const notificationStyle = useSuccessStyle ? sucessStyle : errorStyle

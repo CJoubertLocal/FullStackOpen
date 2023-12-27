@@ -27,7 +27,6 @@ const App = () => {
   }
 
   const handleButtonClickForFilterValue = (val) => {
-    setFilterValue(val)
     filterResultsWithVal(val)
   }
 

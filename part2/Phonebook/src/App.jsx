@@ -7,7 +7,8 @@ import PersonService from './services/persons'
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [filterName, setFilterName] = useState('')
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [useSuccessStyle, setUseSuccessStyle] = useState(false)
 
   useEffect(
     () => {
@@ -22,7 +23,8 @@ const App = () => {
   return (
     <div>
       <Notification
-        message={notification} />
+        message={notification} 
+        useSuccessStyle={useSuccessStyle} />
       <h2>Phonebook</h2>
       <Filter 
         filterName={filterName}
@@ -33,6 +35,7 @@ const App = () => {
         persons={persons}
         setPersons={setPersons}
         notificationSetter={setNotification}
+        notificationStyleSetter={setUseSuccessStyle}
         />
       <h2>Numbers</h2>
       <Persons 
@@ -40,22 +43,34 @@ const App = () => {
         personSetter={setPersons}
         filterName={filterName}
         notificationSetter={setNotification}
+        notificationStyleSetter={setUseSuccessStyle}
         />
     </div>
   )
 }
 
-const Notification = ({message}) => {
+const Notification = ({message, useSuccessStyle}) => {
+  const sucessStyle = {
+    color: 'green',
+    fontSize: 16
+  }
+
+  const errorStyle = {
+    color: 'green',
+    fontSize: 16
+  }
+
+  const notificationStyle = useSuccessStyle ? sucessStyle : errorStyle
+
   if (message === null) {
       return null
   }
 
   return (
-      <div>
+      <div style={notificationStyle}>
           {message}
       </div>
   )
 }
-
 
 export default App

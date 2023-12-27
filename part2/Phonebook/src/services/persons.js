@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 const baseUrl = 'http://localhost:3001/persons'
 
 const getAll = () => {
@@ -6,15 +7,19 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-const create = (newObject, notificationSetter) => {
+const create = (newObject, notificationSetter, notificationStyleSetter) => {
   const request = axios.post(baseUrl, newObject)
 
   notificationSetter(`${newObject.name} was added to the database`)
+  notificationStyleSetter(true)
+  setTimeout(() => {
+    notificationSetter(null)
+  }, 5000)
 
   return request.then(response => response.data)
 }
 
-const update = (id, newObject, notificationSetter) => {
+const update = (id, newObject, notificationSetter, notificationStyleSetter) => {
   const confirmedUpdate = window.confirm(
     `${newObject.name} is already in the phonebook. Do you want to replace the old number with the new one?`
   )
@@ -23,17 +28,25 @@ const update = (id, newObject, notificationSetter) => {
 
   const request = axios.put(`${baseUrl}/${id}`, newObject)
 
-  if (request !== null) {
-    notificationSetter(`There was an error in adding ${newObject.name} to the database`)
-  }
-
-  notificationSetter(`The number for ${newObject.name} was updated`)
   return request
-            .then(response => response.data)
-            .catch(error => console.log(error))
+            .then(response => {
+              notificationSetter(`The number for ${newObject.name} was updated`)
+              notificationStyleSetter(true)
+              setTimeout(() => {
+                notificationSetter(null)
+              }, 5000)
+              return response.data
+            })
+            .catch(error => {
+              notificationSetter(`There was an error in adding ${newObject.name} to the database`)
+              notificationStyleSetter(false)
+              setTimeout(() => {
+                notificationSetter(null)
+              }, 5000)
+            })
 }
 
-const deletePerson = (id, arrayToUpdate, setterFunc, notificationSetter) => {
+const deletePerson = (id, arrayToUpdate, setterFunc, notificationSetter, notificationStyleSetter) => {
     const personToDelete = arrayToUpdate.filter(p => p.id === id)[0].name
     const confirmDeletion = window.confirm(
         `Delete ${personToDelete}?`
@@ -54,12 +67,22 @@ const deletePerson = (id, arrayToUpdate, setterFunc, notificationSetter) => {
     return request
         .then(response => {
             filterAndUpdate()
-            notificationSetter(`${personToDelete} was deleted from the database.`)
+            notificationSetter(
+                `${personToDelete} was deleted from the database.`
+            )
+            notificationStyleSetter(true)
+            setTimeout(() => {
+              notificationSetter(null)
+            }, 5000)
         })
         .catch(error => {
             notificationSetter(
                 `Error: ${personToDelete} had already been deleted from database.`
             )
+            notificationStyleSetter(false)
+            setTimeout(() => {
+              notificationSetter(null)
+            }, 5000)
             filterAndUpdate()
         })
 }

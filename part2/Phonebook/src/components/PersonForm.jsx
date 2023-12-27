@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PersonService from '../services/persons'
 
-const PersonForm = ({persons, setPersons, notificationSetter}) => {
+const PersonForm = ({persons, setPersons, notificationSetter, notificationStyleSetter}) => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
   
@@ -20,7 +20,7 @@ const PersonForm = ({persons, setPersons, notificationSetter}) => {
         
         } else {
           const res = PersonService.
-            update(filteredPersons[0].id, personObject, notificationSetter)
+            update(filteredPersons[0].id, personObject, notificationSetter, notificationStyleSetter)
           
           if (typeof res !== 'undefined') {
             res.
@@ -38,7 +38,7 @@ const PersonForm = ({persons, setPersons, notificationSetter}) => {
   
       } else {
         PersonService.
-          create(personObject, notificationSetter).
+          create(personObject, notificationSetter, notificationStyleSetter).
           then(r => {
             setPersons(persons.concat(r))
             setNewName('')

@@ -14,12 +14,21 @@ const App = () => {
     }, []
   )
 
-  const handleFilterNameChange = (event) => {
+  const filterResultsWithVal = (val) => {
     setCountryResults(allCountryResults.
       filter(c => 
         c.name.common.
           toLowerCase().includes(
-            (event.target.value).toLowerCase())))
+            (val).toLowerCase())))
+  }
+
+  const handleFilterNameChange = (event) => {
+    filterResultsWithVal(event.target.value)
+  }
+
+  const handleButtonClickForFilterValue = (val) => {
+    setFilterValue(val)
+    filterResultsWithVal(val)
   }
 
   return (
@@ -31,6 +40,7 @@ const App = () => {
       />
       <CountryResult
         countryData={countryResults}
+        handleFunc={handleButtonClickForFilterValue}
       />
     </div>
   )

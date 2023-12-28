@@ -1,3 +1,5 @@
+import WeatherData from "./Weather"
+
 const CountryResult = ({countryData, handleFunc}) => {
 
     if (countryData.length > 10) {
@@ -30,7 +32,7 @@ const CountryResult = ({countryData, handleFunc}) => {
         return (
             <>
                 <h1>
-                {countryData[0].name.common}
+                    {countryData[0].name.common}
                 </h1>
                 <div>
                 <p>
@@ -41,7 +43,7 @@ const CountryResult = ({countryData, handleFunc}) => {
                 </p>
                 </div>
                 <h3>
-                languages:
+                    languages:
                 </h3>
                 <div>
                 <ul>
@@ -51,6 +53,9 @@ const CountryResult = ({countryData, handleFunc}) => {
                 <div>
                     {countryData[0].flag}
                 </div>
+                <WeatherData
+                    countryData={countryData[0]}
+                    />
             </>
         )
     }

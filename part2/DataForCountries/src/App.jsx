@@ -7,7 +7,7 @@ const App = () => {
   const [filterValue, setFilterValue] = useState('')
   const [countryResults, setCountryResults] = useState([])
   const [allCountryResults, setAllCountryResults] = useState([])
-  
+
   useEffect(
     () => {
       Countries.getAll().then(cs => setAllCountryResults(cs))

@@ -8,7 +8,6 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-
 export default {
     getAll: getAll,
 }

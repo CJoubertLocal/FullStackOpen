@@ -23,12 +23,14 @@ const CountryResult = ({countryData, handleFunc}) => {
         )
     }
 
+    
+
     if (countryData.length === 1) {
         const ls = []
         for (const [k, v] of Object.entries(countryData[0].languages)) {
             ls.push(v)
         }
-
+        
         return (
             <>
                 <h1>
@@ -51,7 +53,7 @@ const CountryResult = ({countryData, handleFunc}) => {
                 </ul>
                 </div>
                 <div>
-                    {countryData[0].flag}
+                    <img src={countryData[0].flags.png}></img>
                 </div>
                 <WeatherData
                     countryData={countryData[0]}

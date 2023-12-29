@@ -14,6 +14,8 @@ const WeatherData = ({countryData}) => {
         return <></>
     }
 
+    const primaryWeatherIconURL = `https://openweathermap.org/img/wn/` + currentWeatherData.weather[0].icon + `@2x.png`
+
     return (
         <>
             <h2>
@@ -25,7 +27,7 @@ const WeatherData = ({countryData}) => {
                     temperature {currentWeatherData.main.temp} Celcius
                 </p>
                 <p>
-                    
+                    <img src={primaryWeatherIconURL}></img>
                 </p>
                 <p>
                     wind {currentWeatherData.wind.speed} m/s
